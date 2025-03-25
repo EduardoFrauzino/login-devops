@@ -1,33 +1,20 @@
-name: Continuous Deployment (CD) to GitHub Pages
+
+name: CD
 
 on:
   push:
     branches:
-      - main  # 
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repository
+      - name: Check out code
         uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+        
+      - name: Set up Pages
+        uses: JamesIves/github-pages-deploy-action@v4.1.0
         with:
-          node-version: '16'  # Atualize para a versão 16 ou 18
-      - name: Install dependencies (se necessário)
-        run: |
-          npm install
-
-      - name: Build the project (se necessário)
-        run: |
-         
-          echo 
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.GITHUB_TOKEN }}  
-          publish_dir: ./  
+          branch: gh-pages 
+          folder: .
