@@ -1,27 +1,32 @@
-name: Continuous Deployment
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main  
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  
-      - name: Set up Node.js
-        uses: actions/setup-node@v2  
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js 
+        uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '14'  
 
-      - name: Install dependencies
-        run: npm install  
-
-      - name: Deploy to Heroku
+      - name: Build project 
         run: |
-          git remote add heroku https://git.heroku.com/YOUR_HEROKU_APP_NAME.git
-          git push heroku main
+          npm install
+          npm run build 
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  
+          folder: build  
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}  
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
